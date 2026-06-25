@@ -1,0 +1,29 @@
+{
+  "name": "loja-web",
+  "version": "1.0.0",
+  "description": "Loja Web — Laboratório 02: ORM Prisma + MySQL",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "ts-node src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "db:push": "npx prisma db push",
+    "db:generate": "npx prisma generate",
+    "db:studio": "npx prisma studio",
+    "db:seed": "ts-node prisma/seed.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^7.8.0",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.0.1",
+    "prisma": "^7.8.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
