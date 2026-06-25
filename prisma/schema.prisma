@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  id        Int        @id @default(autoincrement())
+  cpf       String     @unique @db.VarChar(11)
+  email     String     @unique @db.VarChar(100)
+  dtNascim  DateTime   @map("dt_nascim")
+  celular   String?    @db.VarChar(15)
+  enderecos Endereco[]
+  compras   Compra[]
+
+  @@map("clientes")
+}
+
+model Endereco {
+  id        Int      @id @default(autoincrement())
+  rua       String   @db.VarChar(150)
+  numero    String   @db.VarChar(10)
+  bairro    String   @db.VarChar(80)
+  cidade    String   @db.VarChar(80)
+  estado    String   @db.VarChar(2)
+  cep       String   @db.VarChar(8)
+  clienteId Int      @map("cliente_id")
+  cliente   Cliente  @relation(fields: [clienteId], references: [id])
+  compras   Compra[]
+
+  @@map("enderecos")
+}
+
+model Compra {
+  id         Int          @id @default(autoincrement())
+  dtHora     DateTime     @default(now()) @map("dt_hora")
+  formaPgto  String       @map("forma_pgto") @db.VarChar(30)
+  desconto   Decimal?     @db.Decimal(5, 2)
+  tCompra    Decimal      @map("t_compra") @db.Decimal(10, 2)
+  clienteId  Int          @map("cliente_id")
+  enderecoId Int          @map("endereco_id")
+  cliente    Cliente      @relation(fields: [clienteId], references: [id])
+  endereco   Endereco     @relation(fields: [enderecoId], references: [id])
+  itens      ItemCompra[]
+
+  @@map("compras")
+}
+
+model Produto {
+  id             Int          @id @default(autoincrement())
+  modelo         String       @db.VarChar(100)
+  preco          Decimal      @db.Decimal(10, 2)
+  qtdeEstoque    Int          @map("qtde_estoque")
+  fabricante     String       @db.VarChar(100)
+  subcategoriaId Int          @map("subcategoria_id")
+  subcategoria   SubCategoria @relation(fields: [subcategoriaId], references: [id])
+  numeroSerie    NumeroSerie?
+  itens          ItemCompra[]
+
+  @@map("produtos")
+}
+
+model NumeroSerie {
+  id        Int     @id @default(autoincrement())
+  nSerie    String  @unique @map("n_serie") @db.VarChar(50)
+  produtoId Int     @unique @map("produto_id")
+  produto   Produto @relation(fields: [produtoId], references: [id])
+
+  @@map("numeros_serie")
+}
+
+model ItemCompra {
+  id         Int     @id @default(autoincrement())
+  quantidade Int
+  precoUnit  Decimal @map("preco_unit") @db.Decimal(10, 2)
+  compraId   Int     @map("compra_id")
+  produtoId  Int     @map("produto_id")
+  compra     Compra  @relation(fields: [compraId], references: [id])
+  produto    Produto @relation(fields: [produtoId], references: [id])
+
+  @@map("itens_compra")
+}
+
+model Categoria {
+  id            Int            @id @default(autoincrement())
+  nome          String         @unique @db.VarChar(80)
+  subcategorias SubCategoria[]
+
+  @@map("categorias")
+}
+
+model SubCategoria {
+  id          Int       @id @default(autoincrement())
+  nome        String    @db.VarChar(80)
+  categoriaId Int       @map("categoria_id")
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+  produtos    Produto[]
+
+  @@map("subcategorias")
+}
