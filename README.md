@@ -109,4 +109,7 @@ npm run db:seed      # Popula o banco com dados de exemplo
 
 ## Screenshots
 
-![Interface Web](img/Screenshot%20from%202026-06-24%2023-12-41.png)
+![Screenshot 1](img/Screenshot%20from%202026-06-24%2023-12-41.png)
+![Screenshot 2](img/Screenshot%20from%202026-06-24%2023-13-15.png)
+![Screenshot 3](img/Screenshot%20from%202026-06-24%2023-13-25.png)
+![Screenshot 4](img/Screenshot%20from%202026-06-24%2023-13-34.png)
